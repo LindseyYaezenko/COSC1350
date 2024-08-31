@@ -35,12 +35,12 @@ img {
 /* Style rules for header content */
 header {
     text-align: center;
-    color: #364a36;
-    background-color: #98b497;
+    color: #ffffff;
+    background-color: #006666;
 }
 
 header h1 {
-    font-family: 'Coustard', serif;
+    font-family: 'Lucida Handwriting', cursive;
     padding: 2%;
 }
 
@@ -57,7 +57,7 @@ header h3 {
 
 /* Style rules for navigation area */
 nav {
-    background-color: #132913;
+    background-color: #000000;
 }
 
 nav ul {
@@ -68,9 +68,9 @@ nav ul {
 nav li {
     display: block;
     font-size: 1.5em;
-    font-family: Verdana, Arial, sans-serif;
+    font-family: 'Lucida Handwriting', cursive;
     font-weight: bold;
-    border-top: 0.5px solid #98b497;
+    border-top: 0.5px solid #000000;
 }
 
 nav li a {
@@ -127,14 +127,16 @@ main p {
 }
 
 main ul {
+    list-style-type: square;
     margin-left: 10%;
 }
 
 /* Style rules for footer content */
 footer {
     text-align: center;
-    font-size: 0.75em;
-    background-color: #132913;
+    font-family: 'Lucida Handwriting', cursive;
+    font-size: 1em;
+    background-color: #006666;
     color: #e2eae2;
     padding: 1% 0;
 }
