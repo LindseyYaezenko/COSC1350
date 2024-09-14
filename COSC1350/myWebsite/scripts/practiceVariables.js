@@ -6,11 +6,11 @@
 
  let hiLindsey = "Hi Lindsey!";
  console.log(typeof hiLindsey);
- let fourPointFive = "4.5";
+ let fourPointFive = 4.5;
  console.log(typeof fourPointFive);
- let zero= "0";
+ let zero= 0;
  console.log(typeof zero);
- let negativeTen = "-10";
+ let negativeTen = -10;
  console.log(typeof negativeTen);
  let ifTrue = "true";
  console.log(typeof ifTrue);
