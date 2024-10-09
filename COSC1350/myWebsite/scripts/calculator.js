@@ -9,6 +9,14 @@ Student Name: Lindsey Yaezenko
     
         // Bill Amount
         let billAmount = parseFloat(document.getElementById("billAmount").value);
+
+        // Validation Check
+    if (isNaN(billAmount) || billAmount <= 0) {
+        document.getElementById("errorDisplay").innerHTML = "Bill cannot be $0.00";
+        return; // Exit the function if validation fails
+    } else {
+        document.getElementById("errorDisplay").innerHTML = ""; 
+    }
     
         // Drop Down Options for Tip %
         let selectedValue = document.getElementById("qualityOfService").value;
