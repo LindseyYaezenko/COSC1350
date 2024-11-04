@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<!--
+	Student Name: Lindsey Yaezenko
+	File Name: guessing.html
+	Date: 11/3/2024
+ -->
+
+<html lang="en">
+	<head>
+		<title>Guessing Game</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/styles.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="https://fonts.googleapis.com/css?family=Coustard:900&display=swap" rel="stylesheet">
+	</head>
+
+	<body>
+
+		
+		<!-- Use the header area for the website name or logo. The header contains static content. -->
+		<header>
+			<h1>Lindsey Yaezenko</h1>
+			<img src="Images/lindseyyaezenko.png" alt="Lindsey Yaezenko" height="467" width="350" class="center">
+		</header>
+
+		<!-- Use the nav area to add hyperlinks to other pages within the website. It contains static content. -->
+		<nav>
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="about.html">About Me</a></li>
+				<li><a href="contact.html">Contact</a></li>
+				<li><a href="calculator.html">Calculator</a></li>
+				<li><a href="guessing.html">Test Your Intuition</a></li>
+			</ul>
+		</nav>
+
+		<!-- Use the main area to add the main content of the webpage -->
+		<main>
+			<form><center>
+				<div id = "container">
+			<h1>Test Your Intuition</h1>
+			<p>I'm thinking of a number between
+				<br> 1 and 100. 
+				<br>
+				<br>
+				What is it?</p>
+			
+			<label for="guessField"> </label>
+			<input type="number" id="guessField" min="1" max="100">
+			<button id="submitGuess">Reveal!</button>
+			
+			<p id="feedback"></p>
+			<p id="previousGuesses">Its not: </p>
+			<button id="reset" style="display: none;">Try Again</button>
+			
+			
+			<script src="scripts/guessing.js" defer></script>
+			</div>
+			</center>
+			</form>
+		</main>
+
+		<!-- Use the footer area to add static footer content, such as email and copyright info. -->
+		<footer>
+			<a href="mailto:lindseyburchett@westernwyoming.edu">lindseyburchett@westernwyoming.edu</a>
+			<p>&copy; Copyright 2024. All Rights Reserved.</p>
+		</footer>
+
+	</body>
+</html>
