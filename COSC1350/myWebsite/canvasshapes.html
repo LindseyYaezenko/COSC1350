@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<!--
+	Student Name: Lindsey Yaezenko
+	File Name: CanvasShapes.html
+	Date: 08/21/2024
+ -->
+
+<html lang="en">
+	<head>
+		<center><title>Canvas Shapes</title></center>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/styles.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="https://fonts.googleapis.com/css?family=Coustard:900&display=swap" rel="stylesheet">
+		
+	</head>
+
+	<body>
+
+		<!-- Use the header area for the website name or logo. The header contains static content. -->
+		<header>
+			<h1>Lindsey Yaezenko</h1>
+			<img src="Images/lindseyyaezenko.png" alt="Lindsey Yaezenko" height="467" width="350" class="center">
+		</header>
+
+		<!-- Use the nav area to add hyperlinks to other pages within the website. It contains static content. -->
+		<nav>
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="about.html">About Me</a></li>
+				<li><a href="contact.html">Contact</a></li>
+				<li><a href="calculator.html">Calculator</a></li>
+				<li><a href="canvasshapes.html">Canvas Shapes</a></li>
+                <li><a href="guessing.html">Test Your Intuition</a></li>
+			</ul>
+		</nav>
+
+		<!-- Use the main area to add the main content of the webpage -->
+		<main>
+		<h1><center> Canvas Shapes </center></h1>
+        <canvas id="myCanvas" width="800" height="500"></canvas>
+        
+        <script>
+            let ctx = document.querySelector("#myCanvas").getContext("2d");
+
+            // Function for drawing Trapezoid
+            function drawTrapezoid(x, y) {
+				ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(x, y);  // Starting point
+                ctx.lineTo(x + 80, y - 80);  // Top-left
+                ctx.lineTo(x + 220, y - 80);  // Top-right
+                ctx.lineTo(x + 300, y);  // Bottom-right
+                ctx.lineTo(x, y);  // Close the shape
+                ctx.lineWidth = 4;
+                ctx.stroke();
+				ctx.restore();
+            }
+            drawTrapezoid(50, 400); // Moved lower on the canvas
+
+           
+            // Function for drawing Spiral
+            function drawSpiral(x, y) {
+				ctx.save();
+                let angle = 2 * Math.PI / 100;  
+                let step = 2 * Math.PI / 100;
+                ctx.moveTo(x, y);
+                while (angle < 30 * Math.PI) {
+                    let newY = y + angle * Math.sin(angle);
+                    let newX = x + angle * Math.cos(angle);
+                    ctx.lineTo(newX, newY);
+                    angle += step;
+                }
+                ctx.stroke();
+				ctx.restore();
+            }
+            drawSpiral(600, 150); // Moved spiral to the right
+
+            // Function for drawing Star
+            function drawStar(x, y) {
+				ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(x, y);  
+                ctx.quadraticCurveTo(x, y + 70, x + 60, y + 30); 
+                ctx.quadraticCurveTo(x, y + 70, x + 80, y + 70);  
+                ctx.quadraticCurveTo(x, y + 70, x + 60, y + 110);  
+                ctx.quadraticCurveTo(x, y + 70, x, y + 140);  
+                ctx.quadraticCurveTo(x, y + 70, x - 60, y + 110);  
+                ctx.quadraticCurveTo(x, y + 70, x - 80, y + 70);  
+                ctx.quadraticCurveTo(x, y + 70, x - 60, y + 30);   
+                ctx.quadraticCurveTo(x, y + 70, x, y);   
+                ctx.strokeStyle = "yellow";
+                ctx.lineWidth = 4;
+                ctx.stroke();
+				ctx.restore();
+            }
+            drawStar(400, 200); // Positioned in the top left
+
+            // Function for drawing ZigZag
+
+            function drawZigZag(x, y) {
+				ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                for (let i = 0; i < 7; i++) {
+                    ctx.lineTo(x + 150, y + i * 20);
+                    ctx.lineTo(x, y + (i + 1) * 20);
+                }
+                ctx.lineWidth = 4;
+                ctx.stroke();
+				ctx.restore();
+            }
+            drawZigZag(100, 110); // Moved to the bottom left of the canvas
+
+			 // Function for drawing Diamond
+			 function drawDiamond(x, y) {
+				
+				ctx.save();
+				ctx.strokeStyle = 'red';
+				ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(x, y);  // Top point
+                ctx.lineTo(x + 40, y + 80);  // Right point
+                ctx.lineTo(x, y + 160);  // Bottom point
+                ctx.lineTo(x - 40, y + 80);  // Left point
+                ctx.closePath();
+                ctx.stroke();
+				ctx.restore();
+            }
+            drawDiamond(560, 300); // Moved right side of the canvas
+
+
+       		 </script>
+		</main>
+
+		<!-- Use the footer area to add static footer content, such as email and copyright info. -->
+		<footer>
+			<a href="mailto:lindseyburchett@westernwyoming.edu">lindseyburchett@westernwyoming.edu</a>
+			<p>&copy; Copyright 2024. All Rights Reserved.</p>
+		</footer>
+
+	</body>
+</html>
