@@ -81,6 +81,16 @@ img {
     display: block;
 }
 
+/* Style for Canvas */
+#myCanvas {
+    
+    border: 5px solid black; 
+    margin-top: 20px;
+    background-color: #006666; 
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
+}
 /* Style rules for mobile viewport */
 
 /* Tablet Viewport: Show mobile class, hide tablet-desktop class */
