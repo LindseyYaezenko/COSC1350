@@ -1,0 +1,31 @@
+/*
+Author: Lindsey Yaezenko
+Date: 11/12/2024
+File Name: breakout.css
+*/
+
+/* CSS Reset */
+body, header, nav, main, footer, img, h1, h3, ul {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+body {
+    background-color: #e2eae2;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    margin: 0;
+    font-family: 'Lucida Handwriting', cursive;
+    font-size: 50px; 
+}
+#myCanvas {
+    
+    border: 5px solid black; 
+    margin-top: 20px;
+    background-color: #006666; 
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
