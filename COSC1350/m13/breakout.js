@@ -7,11 +7,12 @@
  *
  */
 
+
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
 // Paddle properties
-let xPaddle = canvas.width / 2 - 50; // Center the paddle initially
+let xPaddle = canvas.width / 2 - 50;
 const paddleWidth = 100;
 const paddleHeight = 15;
 const paddleY = canvas.height - paddleHeight;
@@ -22,8 +23,8 @@ let moveRight = false;
 const ballRadius = 15;
 let xPos = canvas.width / 2;
 let yPos = canvas.height / 2;
-let xMoveDist = 3;
-let yMoveDist = 3;
+let xMoveDist = 2;
+let yMoveDist = 2;
 
 // Brick properties
 const brickRows = 4;
@@ -33,19 +34,29 @@ const brickHeight = 25;
 const brickPadding = 10;
 const brickTopOffset = 40;
 const brickLeftOffset = 5;
-
-// Brick Array
 const bricks = [];
+
+// Score and game state
+let score = 0;
+let gameOver = false;
+let gameWin = false;
+
+// Button properties
+const buttonWidth = 165;
+const buttonHeight = 40;
+const buttonX = canvas.width / 2 - buttonWidth / 2;
+const buttonY = canvas.height / 2 + 70;
+let buttonVisible = false;
+
+//Brick Array
 for (let r = 0; r < brickRows; r++) {
   bricks[r] = [];
   for (let c = 0; c < brickColumns; c++) {
-    const brickX = brickLeftOffset + c * (brickWidth + brickPadding);
-    const brickY = brickTopOffset + r * (brickHeight + brickPadding);
-    bricks[r][c] = { x: brickX, y: brickY, hit: false };
+    const x = c * (brickWidth + brickPadding) + brickLeftOffset;
+    const y = r * (brickHeight + brickPadding) + brickTopOffset;
+    bricks[r][c] = { x, y, hit: false, color: `rgb(${200 - r * 40}, ${200 - r * 40}, ${200 - r * 40})` };
   }
 }
-
-let gameOver = false; // game status
 
 
 // Event Listeners
@@ -59,7 +70,23 @@ document.addEventListener("keyup", (event) => {
   if (event.key === "ArrowRight") moveRight = false;
 });
 
-// Functions
+canvas.addEventListener("click", (event) => {
+  const clickX = event.offsetX;
+  const clickY = event.offsetY;
+
+  if (
+    buttonVisible &&
+    clickX > buttonX &&
+    clickX < buttonX + buttonWidth &&
+    clickY > buttonY &&
+    clickY < buttonY + buttonHeight
+  ) {
+    resetGame();
+  }
+});
+
+
+//Functions
 
 // Render the ball on the canvas
 function drawBall() {
@@ -82,7 +109,7 @@ function drawPaddle() {
   ctx.closePath();
 }
 
-// Render the bricks
+//Render the bricks
 function drawBricks() {
   for (let r = 0; r < brickRows; r++) {
     for (let c = 0; c < brickColumns; c++) {
@@ -90,108 +117,143 @@ function drawBricks() {
       if (!brick.hit) {
         ctx.beginPath();
         ctx.rect(brick.x, brick.y, brickWidth, brickHeight);
-
-        // brick colors
-        const shades = ["#d3d3d3", "#a9a9a9", "#808080", "#696969"]; // Lightest to darkest
-        ctx.fillStyle = shades[r]; 
-        ctx.strokeStyle = "black"; // Black border
-
+        ctx.fillStyle = brick.color;
         ctx.fill();
-        ctx.lineWidth = 2; 
+        ctx.strokeStyle = "black";
         ctx.stroke();
         ctx.closePath();
       }
     }
   }
 }
+//show score
+function drawScore() {
+  ctx.font = "bold 16px Arial";
+  ctx.fillStyle = "white";
+  ctx.fillText(`Score: ${score}`, 8, 20);
+}
 
-// Handle ball collision with bricks
+//Game Over
+function drawGameOver() {
+  ctx.font = "bold 30px Lucida Handwriting";
+  ctx.fillStyle = gameWin ? "green" : "red";
+  ctx.fillText(gameWin ? "You Win!" : "Game Over", canvas.width / 2 - 75, canvas.height / 2 - 20);
+
+  ctx.font = "bold 20px Lucida Handwriting";
+  ctx.fillStyle = "white";
+  ctx.fillText(`Final Score: ${score}`, canvas.width / 2 - 65, canvas.height / 2 + 10);
+
+  //reset button
+  ctx.beginPath();
+  ctx.rect(buttonX, buttonY, buttonWidth, buttonHeight);
+  ctx.fillStyle = "black";
+  ctx.fill();
+  ctx.closePath();
+
+  ctx.font = "bold 20px Lucida Handwriting";
+  ctx.fillStyle = "white";
+  ctx.fillText("Play Again", buttonX + 15, buttonY + 25);
+}
+
+
+
+// Update the ball's positiion and handle wall collisions
+function updateBallPosition() {
+  xPos += xMoveDist;
+  yPos += yMoveDist;
+
+  
+  if (xPos + ballRadius > canvas.width || xPos - ballRadius < 0) xMoveDist = -xMoveDist;
+  if (yPos - ballRadius < 0) yMoveDist = -yMoveDist;
+
+
+  if (yPos + ballRadius > paddleY && 
+    xPos > xPaddle && 
+    xPos < xPaddle + paddleWidth) {
+    yMoveDist = -yMoveDist;
+  }
+
+// Update paddle position based on key pressed
+  if (yPos + ballRadius > canvas.height) {
+    gameOver = true;
+    buttonVisible = true;
+  }
+}
+
+function updatePaddlePosition() {
+  if (moveLeft && xPaddle > 0) xPaddle -= 3;
+  if (moveRight && xPaddle < canvas.width - paddleWidth) xPaddle += 3;
+}
+
 function checkBrickCollision() {
+  let allBricksCleared = true;
   for (let r = 0; r < brickRows; r++) {
     for (let c = 0; c < brickColumns; c++) {
       const brick = bricks[r][c];
       if (!brick.hit) {
+        allBricksCleared = false;
         if (
           xPos > brick.x &&
           xPos < brick.x + brickWidth &&
           yPos > brick.y &&
           yPos < brick.y + brickHeight
         ) {
-          yMoveDist = -yMoveDist; // Reverse ball direction
-          brick.hit = true; // Mark brick as hit
+          yMoveDist = -yMoveDist;
+          brick.hit = true;
+          score++;
         }
       }
     }
   }
-}
 
-// Update the ball's position and handle wall collisions
-function updateBallPosition() {
-  xPos += xMoveDist;
-  yPos += yMoveDist;
-
-  // Bounce off left and right walls
-  if (xPos + ballRadius > canvas.width || xPos - ballRadius < 0) {
-    xMoveDist = -xMoveDist;
-  }
-
-  // Bounce off top wall
-  if (yPos - ballRadius < 0) {
-    yMoveDist = -yMoveDist;
-  }
-
-  // Paddle collision detection
-  if (
-    yPos + ballRadius > paddleY &&
-    xPos > xPaddle &&
-    xPos < xPaddle + paddleWidth
-  ) {
-    yMoveDist = -yMoveDist; // Reverse direction
-  }
-
-  // Game over logic
-  if (yPos + ballRadius > canvas.height) {
-    gameOver = true; // Set game over status
+  if (allBricksCleared) {
+    gameWin = true;
+    gameOver = true;
+    buttonVisible = true;
   }
 }
 
-// Update paddle position based on key pressed
-function updatePaddlePosition() {
-  if (moveLeft && xPaddle > 0) {
-    xPaddle -= 3; // Move paddle left
-  }
-  if (moveRight && xPaddle < canvas.width - paddleWidth) {
-    xPaddle += 3; // Move paddle right
-  }
-}
 
-// Display "Game Over" text
-function displayGameOver() {
-  ctx.font = "48px Lucida Handwriting";
-  ctx.fillStyle = "black";
-  ctx.textAlign = "center";
-  ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2);
-}
+// Game Logic
 
-// Main Draw Loop
 function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (gameOver) {
-    displayGameOver(); // Show "Game Over" text
-    return; // Stop the game loop
+    drawGameOver();
+    return;
   }
 
-  drawBall(); // Render the ball
-  drawPaddle(); // Render the paddle
-  drawBricks(); // Render the bricks
+  drawBall();
+  drawPaddle();
+  drawBricks();
+  drawScore();
 
-  checkBrickCollision(); // Handle ball-brick collisions
-  updateBallPosition(); // Move the ball and handle collisions
-  updatePaddlePosition(); // Move the paddle if a key is pressed
+  updateBallPosition();
+  updatePaddlePosition();
+  checkBrickCollision();
 }
 
-// Set up the loop using setInterval **Slow or Speed Up Ball*
-const refreshRate = 35; // The interval for each frame in milliseconds
-const intervalID = setInterval (draw, refreshRate); 
+function resetGame() {
+  xPos = canvas.width / 2;
+  yPos = canvas.height / 2;
+  xMoveDist = 2;
+  yMoveDist = 2;
+  xPaddle = canvas.width / 2 - 50;
+  score = 0;
+  gameOver = false;
+  gameWin = false;
+  buttonVisible = false;
+
+  // Reset bricks
+  for (let r = 0; r < brickRows; r++) {
+    for (let c = 0; c < brickColumns; c++) {
+      bricks[r][c].hit = false;
+    }
+  }
+}
+
+//Set up the loop using setInvterval **Slow or Speed Up Ball*
+const refreshRate = 15;
+const intervalId = setInterval(draw, refreshRate);
 
